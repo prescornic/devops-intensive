@@ -1,0 +1,9 @@
+# Ignore all logs by default
+logs/*
+# But keep the summaries directory and summary files
+!logs/summaries/
+!logs/summaries/*.txt
+
+# Editor temp files
+*.swp
+*~

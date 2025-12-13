@@ -1,0 +1,3 @@
+*/5 * * * * /home/glupascu/devops-intensive/Gabi/Task_1/health-monitor/monitor.sh >> /home/glupascu/devops-intensive/Gabi/Task_1/health-monitor/logs/cron-monitor.log 2>&1
+0 0 * * * /home/glupascu/devops-intensive/Gabi/Task_1/health-monitor/git-commit-logs.sh >> /home/glupascu/devops-intensive/Gabi/Task_1/health-monitor/logs/cron-git.log 2>&1
+
