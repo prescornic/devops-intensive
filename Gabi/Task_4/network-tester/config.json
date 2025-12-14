@@ -1,0 +1,12 @@
+{
+  "timeout_seconds": 5,
+  "retries": 2,
+  "concurrency": 10,
+  "ssl_expiry_warning_days": 30,
+  "endpoints": [
+    {"url": "https://example.com", "type": "https", "expected_status": 200},
+    {"url": "http://example.com", "type": "http"},
+    {"host": "example.com", "type": "dns"},
+    {"url": "http://10.255.255.1", "type": "http"}
+  ]
+}

@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+
+# Reports (generated artifacts)
+reports/
+
+# Virtual env
+.venv/
+venv/
