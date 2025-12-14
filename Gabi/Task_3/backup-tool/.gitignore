@@ -1,0 +1,26 @@
+# =========================
+# Backup archives (DO NOT COMMIT)
+# =========================
+backup-*.tar.gz
+*.tar.gz
+
+# =========================
+# Temporary / editor files
+# =========================
+*.tmp
+*.swp
+*~
+*.bak
+
+# =========================
+# OS / tooling noise
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Secrets (if added later)
+# =========================
+*.key
+*.crt
+*.pem

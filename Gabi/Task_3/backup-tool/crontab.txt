@@ -1,0 +1,15 @@
+# ================================
+# Task 3 - Automated Backup System
+# ================================
+
+# 1) Daily LOCAL backup at 01:00
+# Backs up /home/glupascu to /home/glupascu/backups
+0 1 * * * /home/glupascu/devops-intensive/Gabi/Task_3/backup-tool/backup.sh /home/glupascu /home/glupascu/backups >> /home/glupascu/devops-intensive/Gabi/Task_3/backup-tool/logs/cron-backup.log 2>&1
+
+# 2) Daily Git commit of yesterday's backup log at 00:05
+5 0 * * * /home/glupascu/devops-intensive/Gabi/Task_3/backup-tool/scripts/git-commit-backup-logs.sh >> /home/glupascu/devops-intensive/Gabi/Task_3/backup-tool/logs/cron-git.log 2>&1
+
+# Notes:
+# - Ensure SSH keys are configured for remote backups
+# - Ensure Git credentials are already set up
+# - Always test backup.sh manually before enabling cron
