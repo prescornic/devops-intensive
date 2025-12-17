@@ -1,0 +1,29 @@
+default_policy:
+  input: drop
+  forward: drop
+  output: accept
+
+rules:
+  - name: "Allow SSH"
+    port: 22
+    protocol: tcp
+    action: accept
+    source: any
+
+  - name: "Allow HTTP"
+    port: 80
+    protocol: tcp
+    action: accept
+    source: any
+
+  - name: "Allow HTTPS"
+    port: 443
+    protocol: tcp
+    action: accept
+    source: any
+
+  - name: "Block MySQL from external"
+    port: 3306
+    protocol: tcp
+    action: drop
+    source: "!192.168.1.0/24"
