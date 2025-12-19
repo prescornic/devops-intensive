@@ -1,0 +1,26 @@
+api:
+  users_url: "https://jsonplaceholder.typicode.com/users"
+  posts_url: "https://jsonplaceholder.typicode.com/posts"
+  timeout_seconds: 8
+  retries: 3
+  backoff_seconds: 1.5
+
+paths:
+  reports_dir: "./reports"
+  operations_dir: "./operations"
+  nginx_configs_dir: "./operations/nginx-configs"
+  log_file: "./operations/operations.log"
+
+retention:
+  keep_days: 30
+
+system_ops:
+  create_users: true
+  create_home_subdirs: true
+  generate_ssh_keys: true
+  generate_nginx_configs: true
+
+nginx:
+  # These configs are generated as files only (we don't auto-enable nginx by default).
+  server_root: "/var/www"
+  listen_http: 80

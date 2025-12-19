@@ -1,0 +1,8 @@
+# Task 6 - API Data Ops
+
+# Daily report generation (safe, no system ops)
+5 1 * * * cd /home/glupascu/devops-intensive/Gabi/Task_6/api-data-ops && /usr/bin/python3 fetch-and-process.py --config config.yaml --report-only >> operations/logs/cron.log 2>&1
+
+# Cleanup old reports (keep 30 days)
+20 1 * * * cd /home/glupascu/devops-intensive/Gabi/Task_6/api-data-ops && ./cleanup-old-reports.sh 30 >> operations/logs/cron.log 2>&1
+

@@ -1,0 +1,12 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Generated outputs
+reports/
+operations/logs/
+operations/operations.log
+
+# If you ever template secrets
+*.env
