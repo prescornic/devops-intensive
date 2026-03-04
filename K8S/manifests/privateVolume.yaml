@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: deployment2-pvc
+  # namespace: foo
+spec:
+  storageClassName: "gp2" # Empty string must be explicitly set otherwise default StorageClass will be set
+  # volumeName: deployment2-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

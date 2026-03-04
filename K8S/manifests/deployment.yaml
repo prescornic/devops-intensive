@@ -19,3 +19,73 @@ spec:
         image: nginx:1.13.0
         ports:
         - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment2
+  labels:
+    app: nginx2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx2
+  template:
+    metadata:
+      labels:
+        app: nginx2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.13.0
+        ports:
+        - containerPort: 80
+        # env:
+        # - name: ENVIRONMENT
+        #   value: "production"
+        # - name: MY_ARGUMENT
+        #   value: "my_value"
+        # - name: DB_URL
+        #   value: "jdbc:mysql://host.docker.internal:3306/mydb"
+        # - name: DB_USER
+        #   value: "user"
+        # - name: DB_PASSWORD
+        #   value: "password"
+        # - name: DB_NAME
+        #   value: "mydb"
+        # - name: HOST_SERVER
+        #   value: "host.docker.internal"
+        envFrom:
+        - configMapRef:
+            name: deployment2-config
+        - secretRef:
+            name: deployment2-secret
+
+        volumeMounts:
+          - name: config
+            mountPath: "/config"
+            readOnly: true
+          - name: secrets
+            mountPath: "/secrets"
+            readOnly: true
+          - name: private-volume
+            mountPath: "/storage"
+            readOnly: false
+      volumes:
+      - name: config
+        configMap:
+          name: deployment2-file-config
+          items:
+          - key: "user-interface.properties"
+            path: "interface.properties"
+      - name: secrets
+        secret:
+          secretName: deployment2-file-secret
+          items:
+          - key: "user-interface.secrets"
+            path: "interface.secrets"
+      - name: private-volume
+        persistentVolumeClaim:
+          claimName: deployment2-pvc
