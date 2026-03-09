@@ -1,0 +1,6 @@
+podAnnotations: 
+  environment: "dev"
+  cluster: "internship"
+
+ingress:
+  enabled: true
