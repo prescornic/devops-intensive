@@ -1,0 +1,27 @@
+FROM golang:1.21
+
+LABEL maintainer="Gabriel Lupascu" \
+      version="1.0.0" \
+      description="Single-stage Go application build for comparison"
+
+ENV APP_PORT=8080 \
+    APP_ENV=production
+
+WORKDIR /app
+
+COPY go.mod ./
+RUN go mod download
+
+COPY cmd ./cmd
+
+RUN go build -o app ./cmd/app
+
+RUN useradd -m -u 10001 appuser
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --spider --quiet http://127.0.0.1:8080/health || exit 1
+
+CMD ["./app"]

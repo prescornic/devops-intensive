@@ -1,0 +1,223 @@
+
+==================================================
+Starting full Docker networking workflow
+==================================================
+
+==================================================
+Setting up networks
+==================================================
+Creating Docker networks...
+cd5140ad32bd9698b9bcc66cbcff2b8a7a34c974720761a91724443ac97f2bc3
+2a7758128656978e983b08768050c63ba5632dc2d0a29b76381483799bae8f6c
+6752bfac8e27e02a96cb022f57c59e401036f66b1b53532a5279d0711e8d99af
+f166179f1ef0077ad90ad5756f227e968b73cc176af26f30e101db1a9080e89d
+ca1c7950406a8f4e92e669230ee8003d485c7ddd1561ec60ae1f82108358c4a8
+
+Created networks:
+NETWORK ID     NAME                DRIVER    SCOPE
+6752bfac8e27   backend-net         bridge    local
+2e097844e91d   bridge              bridge    local
+cd5140ad32bd   custom-bridge-net   bridge    local
+2a7758128656   frontend-net        bridge    local
+764f23e325c4   host                host      local
+f166179f1ef0   isolated-net-a      bridge    local
+ca1c7950406a   isolated-net-b      bridge    local
+473a480b370e   none                null      local
+
+==================================================
+Deploying containers
+==================================================
+Building backend image...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 241B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-alpine
+#2 DONE 0.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/5] FROM docker.io/library/python:3.11-alpine@sha256:f07e2ace46f560f09a6eeec7b4913b80ee99546e749ef82342a419a326620856
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 28B done
+#5 DONE 0.0s
+
+#6 [2/5] WORKDIR /app
+#6 CACHED
+
+#7 [3/5] RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+#7 CACHED
+
+#8 [4/5] COPY app.py .
+#8 CACHED
+
+#9 [5/5] RUN pip install --no-cache-dir flask
+#9 CACHED
+
+#10 exporting to image
+#10 exporting layers done
+#10 writing image sha256:1253b5ed32d3cdd5fd9473e7b1f18b52c57a3c9442b97645d910df4c332964c6 done
+#10 naming to docker.io/library/network-backend:1.0.0 done
+#10 DONE 0.0s
+Deploying custom bridge network demo containers...
+705ff3e643b2809e3327bf36dc0b97d0295b4b601cc4743d1adc679be93b09e0
+5404d793b1c50678f2ba5684ef7efa6aad45d1854e2d43554361a4e1cebc3f90
+Deploying isolated network demo containers...
+722385a05f81481eb0c191f86f391518aa95216249de6811c21781a5f9a32016
+07e3d780e25f19d3f0aa1900f320fdee9c012f13b0b1f6861cd06bc76a0bd721
+Deploying multi-network bridge container...
+0da36f7b65b680a61a33833c4db49576cd37b4d042a9528a8b447e8eb2e6f92e
+Deploying frontend container...
+5ea8d8c9d84000baf296ec63a18de8b5861d0932b6f578c6bccce634aa660e0f
+Deploying backend container...
+acf58ac867083d77614b7f062e81132d83438e5aa0810a6d9987676012b03c45
+Deploying database container...
+f04f0c43655fc90cec2394ece2867396fc66c2a755eb6586f8ff6bf78ec3b75d
+Deploying none network demo container...
+ae414661a7efb9f0978cd37a1efb6d035fb776d30da2ef23720631ce55873eed
+Deploying host network demo container...
+0af7dba36ff344cf266437adc437bf76f8f8a28395d1c7545b957b917f950512
+
+Deployment complete.
+CONTAINER ID   IMAGE                   COMMAND                  CREATED                  STATUS                    PORTS                                         NAMES
+0af7dba36ff3   nginx:alpine            "/docker-entrypoint.…"   Less than a second ago   Up Less than a second                                                   host-demo
+ae414661a7ef   alpine:3.20             "sleep 3600"             Less than a second ago   Up Less than a second                                                   none-demo
+f04f0c43655f   postgres:16-alpine      "docker-entrypoint.s…"   Less than a second ago   Up Less than a second     5432/tcp                                      database
+acf58ac86708   network-backend:1.0.0   "python app.py"          1 second ago             Up Less than a second     5000/tcp                                      backend
+5ea8d8c9d840   nginx:alpine            "/docker-entrypoint.…"   1 second ago             Up Less than a second     80/tcp                                        frontend
+0da36f7b65b6   alpine:3.20             "sleep 3600"             1 second ago             Up Less than a second                                                   network-bridge
+07e3d780e25f   alpine:3.20             "sleep 3600"             1 second ago             Up Less than a second                                                   isolated-b
+722385a05f81   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             isolated-a
+5404d793b1c5   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             bridge-b
+705ff3e643b2   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             bridge-a
+d845c54fdb3d   myapp-multi:1.0.0       "./app"                  56 minutes ago           Up 56 minutes (healthy)   0.0.0.0:8081->8080/tcp, [::]:8081->8080/tcp   myapp-multi-container
+ba3b00f0d008   myapp:1.0.0             "python app.py"          About an hour ago        Up About an hour          0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp   myapp-container
+
+==================================================
+Waiting for core containers
+==================================================
+Waiting for container 'frontend' to be running...
+Container 'frontend' is running.
+Waiting for container 'backend' to be running...
+Container 'backend' is running.
+Waiting for container 'database' to be running...
+Container 'database' is running.
+Waiting for container 'network-bridge' to be running...
+Container 'network-bridge' is running.
+
+==================================================
+Waiting for backend application readiness
+==================================================
+Waiting for HTTP endpoint 'http://127.0.0.1:5000/health' inside container 'backend'...
+Endpoint 'http://127.0.0.1:5000/health' is reachable from 'backend'.
+
+==================================================
+Running containers
+==================================================
+CONTAINER ID   IMAGE                   COMMAND                  CREATED                  STATUS                    PORTS                                         NAMES
+0af7dba36ff3   nginx:alpine            "/docker-entrypoint.…"   Less than a second ago   Up Less than a second                                                   host-demo
+ae414661a7ef   alpine:3.20             "sleep 3600"             Less than a second ago   Up Less than a second                                                   none-demo
+f04f0c43655f   postgres:16-alpine      "docker-entrypoint.s…"   Less than a second ago   Up Less than a second     5432/tcp                                      database
+acf58ac86708   network-backend:1.0.0   "python app.py"          1 second ago             Up Less than a second     5000/tcp                                      backend
+5ea8d8c9d840   nginx:alpine            "/docker-entrypoint.…"   1 second ago             Up Less than a second     80/tcp                                        frontend
+0da36f7b65b6   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             network-bridge
+07e3d780e25f   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             isolated-b
+722385a05f81   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             isolated-a
+5404d793b1c5   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             bridge-b
+705ff3e643b2   alpine:3.20             "sleep 3600"             1 second ago             Up 1 second                                                             bridge-a
+d845c54fdb3d   myapp-multi:1.0.0       "./app"                  56 minutes ago           Up 56 minutes (healthy)   0.0.0.0:8081->8080/tcp, [::]:8081->8080/tcp   myapp-multi-container
+ba3b00f0d008   myapp:1.0.0             "python app.py"          About an hour ago        Up About an hour          0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp   myapp-container
+
+==================================================
+Testing connectivity
+==================================================
+=== Test 1: bridge network DNS resolution ===
+PING bridge-b (172.18.0.3): 56 data bytes
+64 bytes from 172.18.0.3: seq=0 ttl=64 time=0.177 ms
+64 bytes from 172.18.0.3: seq=1 ttl=64 time=0.137 ms
+
+--- bridge-b ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.137/0.157/0.177 ms
+
+=== Test 2: bridge network name resolution using nslookup ===
+Server:		127.0.0.11
+Address:	127.0.0.11#53
+
+Non-authoritative answer:
+Name:	bridge-b
+Address: 172.18.0.3
+
+
+=== Test 3: isolated networks should NOT communicate ===
+ping: bad address 'isolated-b'
+Expected failure: isolated-a cannot reach isolated-b
+
+=== Test 4: multi-network bridge can reach frontend and backend side names ===
+PING backend (172.20.0.3) 56(84) bytes of data.
+64 bytes from backend.backend-net (172.20.0.3): icmp_seq=1 ttl=64 time=0.105 ms
+64 bytes from backend.backend-net (172.20.0.3): icmp_seq=2 ttl=64 time=0.084 ms
+
+--- backend ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1033ms
+rtt min/avg/max/mdev = 0.084/0.094/0.105/0.010 ms
+
+=== Test 5: frontend can reach backend ===
+{"status":"healthy"}
+
+=== Test 6: frontend should NOT reach database directly ===
+Server:		127.0.0.11
+Address:	127.0.0.11#53
+
+** server can't find database: NXDOMAIN
+
+Expected failure: frontend cannot resolve database
+
+=== Test 7: backend should reach database by name ===
+PING database (172.20.0.4): 56 data bytes
+64 bytes from 172.20.0.4: seq=0 ttl=42 time=0.109 ms
+64 bytes from 172.20.0.4: seq=1 ttl=42 time=0.137 ms
+
+--- database ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.109/0.123/0.137 ms
+
+=== Test 8: none network should be isolated ===
+PING 8.8.8.8 (8.8.8.8): 56 data bytes
+ping: sendto: Network unreachable
+Expected failure: none-demo has no network access
+
+=== Test 9: inspect backend networks ===
+{"backend-net":{"IPAMConfig":{},"Links":null,"Aliases":[],"MacAddress":"66:6e:f7:22:17:52","DriverOpts":{},"GwPriority":0,"NetworkID":"6752bfac8e27e02a96cb022f57c59e401036f66b1b53532a5279d0711e8d99af","EndpointID":"37ee9b24e346485546420a8c00f6bee0bd1db3699ad88b6919bc96d059a123f0","Gateway":"172.20.0.1","IPAddress":"172.20.0.3","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["backend","acf58ac86708"]},"frontend-net":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"92:0b:42:e0:01:ab","DriverOpts":null,"GwPriority":0,"NetworkID":"2a7758128656978e983b08768050c63ba5632dc2d0a29b76381483799bae8f6c","EndpointID":"6875b725ada3ac6e2fe83c662ad1790d5771b50780cac952572a0cb413fb6749","Gateway":"172.19.0.1","IPAddress":"172.19.0.4","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["backend","acf58ac86708"]}}
+
+Do you want to clean up resources now? (y/n): 
+==================================================
+Cleaning up resources
+==================================================
+Stopping and removing containers...
+bridge-a
+bridge-b
+isolated-a
+isolated-b
+network-bridge
+frontend
+backend
+database
+none-demo
+host-demo
+Removing networks...
+custom-bridge-net
+frontend-net
+backend-net
+isolated-net-a
+isolated-net-b
+Removing backend image...
+Untagged: network-backend:1.0.0
+Deleted: sha256:1253b5ed32d3cdd5fd9473e7b1f18b52c57a3c9442b97645d910df4c332964c6
+Cleanup complete.
