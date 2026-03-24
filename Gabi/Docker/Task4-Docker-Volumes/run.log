@@ -1,0 +1,112 @@
+
+==================================================
+Starting full Task 4 workflow
+==================================================
+
+==================================================
+Starting Task 4 services
+==================================================
+ Container task4-writer  Running
+ Container task4-tmpfs  Running
+ Container task4-reader  Running
+ Container task4-postgres  Running
+ Container task4-nginx  Running
+
+==================================================
+Running Task 4 tests
+==================================================
+
+==================================================
+Starting Task 4 persistence tests
+==================================================
+Log file: test-results.log
+
+==================================================
+Waiting for PostgreSQL
+==================================================
+PostgreSQL container 'task4-postgres' is ready.
+
+==================================================
+Test 1: Named volume persistence
+==================================================
+Creating table if needed...
+NOTICE:  relation "users" already exists, skipping
+CREATE TABLE
+Resetting table contents for deterministic test...
+TRUNCATE TABLE
+Inserting sample data...
+INSERT 0 2
+Reading inserted data...
+ id |  name   
+----+---------
+  1 | Gabriel
+  2 | DevOps
+(2 rows)
+
+Recreating PostgreSQL container without deleting volume...
+task4-postgres
+task4-postgres
+ Container task4-postgres  Creating
+ Container task4-postgres  Created
+ Container task4-postgres  Starting
+ Container task4-postgres  Started
+PostgreSQL container 'task4-postgres' is ready.
+Verifying persisted data...
+ id |  name   
+----+---------
+  1 | Gabriel
+  2 | DevOps
+(2 rows)
+
+
+==================================================
+Test 2: Bind mount
+==================================================
+Current nginx page content:
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Docker Volumes Task</title>
+</head>
+<body>
+  <h1>Updated locally and reflected in container</h1>
+  <p>This page is served from a local directory mounted into nginx.</p>
+</body>
+</html>
+Bind mount validation note:
+Edit ./nginx/html/index.html locally, then reload nginx with:
+  docker exec task4-nginx nginx -s reload
+Then run:
+  curl http://localhost:8082/
+
+==================================================
+Test 3: tmpfs non-persistence
+==================================================
+Creating temporary file in tmpfs mount...
+ephemeral
+Restarting tmpfs container...
+Verifying temporary file does not persist...
+PASS: tmpfs data did not persist after restart
+
+==================================================
+Test 4: Shared volume consistency
+==================================================
+Reading shared file from reader...
+Shared volume updated successfully
+Updating shared file from writer...
+Reading updated shared file from reader...
+Shared volume updated successfully
+
+==================================================
+Test 5: Backup and restore using pg_dump
+==================================================
+Creating PostgreSQL logical backup...
+Source container : task4-postgres
+Database         : appdb
+User             : appuser
+Output file      : ./backups/appdb-backup-20260324-143027.sql
+
+Backup completed successfully.
+-rw-r--r--  1 glupascu  staff   1.9K Mar 24 14:30 ./backups/appdb-backup-20260324-143027.sql
+Latest backup detected: ./backups/appdb-backup-20260324-143027.sql
+mkdir: ./backups/appdb-backup-20260324-143027.sql: File exists
