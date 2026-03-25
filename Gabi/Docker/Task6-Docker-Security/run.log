@@ -1,0 +1,452 @@
+
+==================================================
+Starting full Task 6 workflow
+==================================================
+
+==================================================
+Setting up secrets
+==================================================
+Secret file already exists: secrets/app_secret.txt
+-rw-------  1 glupascu  staff  33 Mar 25 14:22 secrets/app_secret.txt
+
+==================================================
+Building and starting secure container
+==================================================
+#1 [internal] load local bake definitions
+#1 reading from stdin 642B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.secure
+#2 transferring dockerfile: 529B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.7s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-alpine
+#4 DONE 0.7s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 151B done
+#5 DONE 0.0s
+
+#6 [builder 1/4] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 DONE 0.0s
+
+#7 [stage-1 1/5] FROM docker.io/library/python:3.11-alpine@sha256:f07e2ace46f560f09a6eeec7b4913b80ee99546e749ef82342a419a326620856
+#7 DONE 0.0s
+
+#8 [stage-1 2/5] WORKDIR /app
+#8 CACHED
+
+#9 [internal] load build context
+#9 transferring context: 94B done
+#9 DONE 0.0s
+
+#10 [builder 3/4] COPY app/requirements.txt .
+#10 CACHED
+
+#11 [builder 2/4] WORKDIR /build
+#11 CACHED
+
+#12 [builder 4/4] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+#12 CACHED
+
+#13 [stage-1 3/5] RUN addgroup -g 10001 -S appgroup &&     adduser -u 10001 -S appuser -G appgroup
+#13 DONE 0.1s
+
+#14 [stage-1 4/5] COPY --from=builder /install /usr/local
+#14 DONE 0.0s
+
+#15 [stage-1 5/5] COPY app/app.py /app/app.py
+#15 DONE 0.0s
+
+#16 exporting to image
+#16 exporting layers 0.0s done
+#16 writing image sha256:722151468c133d092609bed54e268de62dabb4a966904f06feb15e6504d92dc5 done
+#16 naming to docker.io/library/secure-app:1.0.0 done
+#16 DONE 0.0s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ secure-app:1.0.0  Built
+ Network task6-docker-security_default  Creating
+ Network task6-docker-security_default  Created
+ Container task6-docker-security-secure-app-1  Creating
+ Container task6-docker-security-secure-app-1  Created
+ Container task6-docker-security-secure-app-1  Starting
+ Container task6-docker-security-secure-app-1  Started
+
+==================================================
+Waiting for service health
+==================================================
+Waiting for service 'secure-app' to be healthy...
+Current status: starting
+Current status: starting
+Current status: starting
+Current status: starting
+Current status: starting
+Current status: starting
+Current status: starting
+Current status: starting
+Service 'secure-app' is healthy.
+
+==================================================
+Running runtime tests
+==================================================
+Test 1: docker compose ps
+NAME                                 IMAGE              COMMAND           SERVICE      CREATED          STATUS                    PORTS
+task6-docker-security-secure-app-1   secure-app:1.0.0   "python app.py"   secure-app   18 seconds ago   Up 17 seconds (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+
+Test 2: Health endpoint
+{"status":"healthy"}
+
+
+Test 3: Secret file endpoint
+{"secret_length":32,"secret_loaded":true}
+
+
+==================================================
+Running image scans
+==================================================
+Building secure image...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.secure
+#1 transferring dockerfile: 529B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/python:3.11-alpine
+#3 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 151B done
+#4 DONE 0.0s
+
+#5 [builder 1/4] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#5 DONE 0.0s
+
+#6 [stage-1 1/5] FROM docker.io/library/python:3.11-alpine@sha256:f07e2ace46f560f09a6eeec7b4913b80ee99546e749ef82342a419a326620856
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 94B done
+#7 DONE 0.0s
+
+#8 [stage-1 2/5] WORKDIR /app
+#8 CACHED
+
+#9 [builder 3/4] COPY app/requirements.txt .
+#9 CACHED
+
+#10 [stage-1 4/5] COPY --from=builder /install /usr/local
+#10 CACHED
+
+#11 [builder 2/4] WORKDIR /build
+#11 CACHED
+
+#12 [stage-1 3/5] RUN addgroup -g 10001 -S appgroup &&     adduser -u 10001 -S appuser -G appgroup
+#12 CACHED
+
+#13 [builder 4/4] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+#13 CACHED
+
+#14 [stage-1 5/5] COPY app/app.py /app/app.py
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 writing image sha256:8dc838bea381f72da1846998005ead7d1ccea69d707b9edf6c274a5384b9d33c done
+#15 naming to docker.io/library/secure-app:1.0.0 done
+#15 DONE 0.0s
+
+Running Trivy scan...
+2026-03-25T14:38:15+02:00	INFO	[vuln] Vulnerability scanning is enabled
+2026-03-25T14:38:15+02:00	INFO	[secret] Secret scanning is enabled
+2026-03-25T14:38:15+02:00	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+2026-03-25T14:38:15+02:00	INFO	[secret] Please see https://trivy.dev/docs/v0.69/guide/scanner/secret#recommendation for faster secret detection
+2026-03-25T14:38:15+02:00	INFO	Detected OS	family="alpine" version="3.23.3"
+2026-03-25T14:38:15+02:00	INFO	[alpine] Detecting vulnerabilities...	os_version="3.23" repository="3.23" pkg_num=38
+2026-03-25T14:38:15+02:00	INFO	Number of language-specific files	num=1
+2026-03-25T14:38:15+02:00	INFO	[python-pkg] Detecting vulnerabilities...
+2026-03-25T14:38:15+02:00	INFO	Table result includes only package filenames. Use '--format json' option to get the full path to the package file.
+
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┬─────────┐
+│                                      Target                                      │    Type    │ Vulnerabilities │ Secrets │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ secure-app:1.0.0 (alpine 3.23.3)                                                 │   alpine   │        1        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/blinker-1.9.0.dist-info/METADATA          │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/click-8.3.1.dist-info/METADATA            │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/flask-3.0.3.dist-info/METADATA            │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/itsdangerous-2.2.0.dist-info/METADATA     │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/jinja2-3.1.6.dist-info/METADATA           │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/markupsafe-3.0.3.dist-info/METADATA       │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/pip-24.0.dist-info/METADATA               │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools-79.0.1.dist-info/METADATA      │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/autocommand-2.2.2.dis- │ python-pkg │        0        │    -    │
+│ t-info/METADATA                                                                  │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/backports.tarfile-1.2- │ python-pkg │        0        │    -    │
+│ .0.dist-info/METADATA                                                            │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/importlib_metadata-8.- │ python-pkg │        0        │    -    │
+│ 0.0.dist-info/METADATA                                                           │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/inflect-7.3.1.dist-in- │ python-pkg │        0        │    -    │
+│ fo/METADATA                                                                      │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/jaraco.collections-5.- │ python-pkg │        0        │    -    │
+│ 1.0.dist-info/METADATA                                                           │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/jaraco.context-5.3.0.- │ python-pkg │        1        │    -    │
+│ dist-info/METADATA                                                               │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/jaraco.functools-4.0.- │ python-pkg │        0        │    -    │
+│ 1.dist-info/METADATA                                                             │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/jaraco.text-3.12.1.di- │ python-pkg │        0        │    -    │
+│ st-info/METADATA                                                                 │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/more_itertools-10.3.0- │ python-pkg │        0        │    -    │
+│ .dist-info/METADATA                                                              │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/packaging-24.2.dist-i- │ python-pkg │        0        │    -    │
+│ nfo/METADATA                                                                     │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/platformdirs-4.2.2.di- │ python-pkg │        0        │    -    │
+│ st-info/METADATA                                                                 │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/tomli-2.0.1.dist-info- │ python-pkg │        0        │    -    │
+│ /METADATA                                                                        │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/typeguard-4.3.0.dist-- │ python-pkg │        0        │    -    │
+│ info/METADATA                                                                    │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/typing_extensions-4.1- │ python-pkg │        0        │    -    │
+│ 2.2.dist-info/METADATA                                                           │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/wheel-0.45.1.dist-inf- │ python-pkg │        1        │    -    │
+│ o/METADATA                                                                       │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/setuptools/_vendor/zipp-3.19.2.dist-info- │ python-pkg │        0        │    -    │
+│ /METADATA                                                                        │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/werkzeug-3.1.7.dist-info/METADATA         │ python-pkg │        0        │    -    │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.11/site-packages/wheel-0.45.1.dist-info/METADATA           │ python-pkg │        1        │    -    │
+└──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+secure-app:1.0.0 (alpine 3.23.3)
+================================
+Total: 1 (HIGH: 1, CRITICAL: 0)
+
+┌─────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬─────────────────────────────────────────────────────────────┐
+│ Library │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                            │
+├─────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ zlib    │ CVE-2026-22184 │ HIGH     │ fixed  │ 1.3.1-r2          │ 1.3.2-r0      │ zlib: zlib: Arbitrary code execution via buffer overflow in │
+│         │                │          │        │                   │               │ untgz utility                                               │
+│         │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-22184                  │
+└─────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴─────────────────────────────────────────────────────────────┘
+
+Python (python-pkg)
+===================
+Total: 3 (HIGH: 3, CRITICAL: 0)
+
+┌───────────────────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│          Library          │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                             │
+├───────────────────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ jaraco.context (METADATA) │ CVE-2026-23949 │ HIGH     │ fixed  │ 5.3.0             │ 6.1.0         │ jaraco.context: jaraco.context: Path traversal via malicious │
+│                           │                │          │        │                   │               │ tar archives                                                 │
+│                           │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-23949                   │
+├───────────────────────────┼────────────────┤          │        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ wheel (METADATA)          │ CVE-2026-24049 │          │        │ 0.45.1            │ 0.46.2        │ wheel: wheel: Privilege Escalation or Arbitrary Code         │
+│                           │                │          │        │                   │               │ Execution via malicious wheel file...                        │
+│                           │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-24049                   │
+│                           │                │          │        │                   │               │                                                              │
+│                           │                │          │        │                   │               │                                                              │
+│                           │                │          │        │                   │               │                                                              │
+│                           │                │          │        │                   │               │                                                              │
+└───────────────────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴──────────────────────────────────────────────────────────────┘
+
+Running docker scan...
+docker scan not available. Skipping docker scan.
+
+Running Grype...
+NAME            INSTALLED   FIXED IN                    TYPE    VULNERABILITY        SEVERITY  EPSS           RISK   
+python          3.11.15     *3.13.11, 3.14.1, 3.15.0    binary  CVE-2025-13836       High      0.2% (35th)    0.1    
+python          3.11.15     *3.13.12, 3.14.3, 3.15.0a6  binary  CVE-2026-0672        Medium    0.1% (33rd)    < 0.1  
+jaraco-context  5.3.0       6.1.0                       python  GHSA-58pv-8j8x-9vj2  High      < 0.1% (24th)  < 0.1  
+python          3.11.15     *3.13.12, 3.14.3, 3.15.0a6  binary  CVE-2026-0865        Medium    0.1% (31st)    < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2026-3644        Medium    0.1% (29th)    < 0.1  
+python          3.11.15     3.15.0a6                    binary  CVE-2025-15366       Medium    < 0.1% (22nd)  < 0.1  
+python          3.11.15     3.15.0a6                    binary  CVE-2025-15367       Medium    < 0.1% (22nd)  < 0.1  
+busybox         1.37.0-r30                              apk     CVE-2025-60876       Medium    < 0.1% (19th)  < 0.1  
+busybox-binsh   1.37.0-r30                              apk     CVE-2025-60876       Medium    < 0.1% (19th)  < 0.1  
+ssl_client      1.37.0-r30                              apk     CVE-2025-60876       Medium    < 0.1% (19th)  < 0.1  
+libcrypto3      3.5.5-r0                                apk     CVE-2026-2673        High      < 0.1% (13th)  < 0.1  
+libssl3         3.5.5-r0                                apk     CVE-2026-2673        High      < 0.1% (13th)  < 0.1  
+python          3.11.15     *3.13.11, 3.14.2, 3.15.0    binary  CVE-2025-12084       Medium    < 0.1% (15th)  < 0.1  
+python          3.11.15     *3.13.12, 3.14.3, 3.15.0a6  binary  CVE-2025-15282       Medium    < 0.1% (11th)  < 0.1  
+python          3.11.15     *3.13.12, 3.14.3, 3.15.0a6  binary  CVE-2026-1299        Medium    < 0.1% (11th)  < 0.1  
+python          3.11.15     *3.13.12, 3.14.3, 3.15.0a6  binary  CVE-2025-11468       Medium    < 0.1% (10th)  < 0.1  
+python          3.11.15     *3.13.10, 3.14.1, 3.15.0a2  binary  CVE-2025-6075        Medium    < 0.1% (9th)   < 0.1  
+python          3.11.15     *3.13.10, 3.14.1, 3.15.0    binary  CVE-2025-13837       Medium    < 0.1% (6th)   < 0.1  
+pip             24.0        25.3                        python  GHSA-4xh5-x5gv-qwph  Medium    < 0.1% (5th)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2026-4224        Medium    < 0.1% (4th)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2026-4519        High      < 0.1% (2nd)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2025-12781       Medium    < 0.1% (4th)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2026-2297        Medium    < 0.1% (3rd)   < 0.1  
+wheel           0.45.1      0.46.2                      python  GHSA-8rrh-rw8j-w5fx  High      < 0.1% (1st)   < 0.1  
+pip             24.0        26.0                        python  GHSA-6vgw-5pg2-w6jp  Low       < 0.1% (5th)   < 0.1  
+zlib            1.3.1-r2    1.3.2-r0                    apk     CVE-2026-27171       Medium    < 0.1% (0th)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2025-13462       Low       < 0.1% (1st)   < 0.1  
+flask           3.0.3       3.1.3                       python  GHSA-68rp-wp8r-4726  Low       < 0.1% (1st)   < 0.1  
+python          3.11.15     3.15.0                      binary  CVE-2026-3479        Low       < 0.1% (0th)   < 0.1
+
+Scans completed. Results saved in scan-results/
+
+==================================================
+Generating security documentation
+==================================================
+Generated:
+  - security-report.md
+  - security-checklist.md
+
+==================================================
+Generated files
+==================================================
+-rw-r--r--  1 glupascu  staff   1.2K Mar 25 14:38 security-checklist.md
+-rw-r--r--  1 glupascu  staff   1.7K Mar 25 14:38 security-report.md
+
+==================================================
+Workflow completed successfully
+==================================================
+All output has been saved to run.log
+
+Do you want to stop containers now? (y/n): 
+==================================================
+Cleaning up secure stack
+==================================================
+ Container task6-docker-security-secure-app-1  Stopping
+ Container task6-docker-security-secure-app-1  Stopped
+ Container task6-docker-security-secure-app-1  Removing
+ Container task6-docker-security-secure-app-1  Removed
+ Network task6-docker-security_default  Removing
+ Network task6-docker-security_default  Removed
+Containers stopped.
+
+==================================================
+Starting full Task 6 workflow
+==================================================
+
+==================================================
+Setting up secrets
+==================================================
+Secret file already exists: secrets/app_secret.txt
+-rw-------  1 glupascu  staff  33 Mar 25 14:22 secrets/app_secret.txt
+
+==================================================
+Building and starting secure container
+==================================================
+#1 [internal] load local bake definitions
+#1 reading from stdin 642B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.secure
+#2 transferring dockerfile: 529B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.5s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-alpine
+#4 DONE 0.5s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 151B done
+#5 DONE 0.0s
+
+#6 [builder 1/4] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#6 DONE 0.0s
+
+#7 [stage-1 1/5] FROM docker.io/library/python:3.11-alpine@sha256:f07e2ace46f560f09a6eeec7b4913b80ee99546e749ef82342a419a326620856
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 94B done
+#8 DONE 0.0s
+
+#9 [stage-1 2/5] WORKDIR /app
+#9 CACHED
+
+#10 [stage-1 4/5] COPY --from=builder /install /usr/local
+#10 CACHED
+
+#11 [builder 4/4] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+#11 CACHED
+
+#12 [builder 3/4] COPY app/requirements.txt .
+#12 CACHED
+
+#13 [builder 2/4] WORKDIR /build
+#13 CACHED
+
+#14 [stage-1 3/5] RUN addgroup -g 10001 -S appgroup &&     adduser -u 10001 -S appuser -G appgroup
+#14 CACHED
+
+#15 [stage-1 5/5] COPY app/app.py /app/app.py
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers done
+#16 writing image sha256:722151468c133d092609bed54e268de62dabb4a966904f06feb15e6504d92dc5 done
+#16 naming to docker.io/library/secure-app:1.0.0 done
+#16 DONE 0.0s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ secure-app:1.0.0  Built
+ Network task6-docker-security_default  Creating
+ Network task6-docker-security_default  Created
+ Container task6-docker-security-secure-app-1  Creating
+ Container task6-docker-security-secure-app-1  Created
+ Container task6-docker-security-secure-app-1  Starting
+ Container task6-docker-security-secure-app-1  Started
+
+==================================================
+Waiting for service health
+==================================================
+Waiting for service 'secure-app' to be healthy...
+Current status: starting
+
+==================================================
+Cleaning up secure stack
+==================================================
+ Container task6-docker-security-secure-app-1  Stopping
+ Container task6-docker-security-secure-app-1  Stopped
+ Container task6-docker-security-secure-app-1  Removing
+ Container task6-docker-security-secure-app-1  Removed
+ Network task6-docker-security_default  Removing
+ Network task6-docker-security_default  Removed
+Containers stopped.
