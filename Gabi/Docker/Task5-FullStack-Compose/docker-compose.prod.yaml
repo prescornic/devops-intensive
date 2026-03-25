@@ -1,0 +1,17 @@
+services:
+  backend:
+    environment:
+      FLASK_ENV: production
+
+  frontend:
+    environment:
+      NODE_ENV: production
+
+  nginx:
+    restart: always
+
+  postgres:
+    restart: always
+
+  redis:
+    restart: always

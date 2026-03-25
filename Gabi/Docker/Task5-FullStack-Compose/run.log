@@ -1,0 +1,277 @@
+
+==================================================
+Starting Task 5 Full Stack Workflow
+==================================================
+
+==================================================
+Starting stack
+==================================================
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.25kB done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 353B done
+#2 DONE 0.0s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 192B done
+#3 DONE 0.0s
+
+#4 [backend internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.0s
+
+#5 [frontend internal] load metadata for docker.io/library/node:18-alpine
+#5 DONE 1.1s
+
+#6 [backend internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [backend 1/6] FROM docker.io/library/python:3.11-slim@sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+#7 DONE 0.0s
+
+#8 [backend internal] load build context
+#8 transferring context: 63B done
+#8 DONE 0.0s
+
+#9 [backend 3/6] RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+#9 CACHED
+
+#10 [backend 4/6] COPY requirements.txt .
+#10 CACHED
+
+#11 [backend 2/6] WORKDIR /app
+#11 CACHED
+
+#12 [backend 5/6] RUN pip install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [backend 6/6] COPY app.py .
+#13 CACHED
+
+#14 [backend] exporting to image
+#14 exporting layers done
+#14 writing image sha256:0acfbbafab5c241687c5e127e9f8b6abdd1cc4549447e942271cf9bf168ffce8 done
+#14 naming to docker.io/library/task5-fullstack-compose-backend done
+#14 DONE 0.0s
+
+#15 [backend] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#16 [frontend internal] load .dockerignore
+#16 transferring context: 2B done
+#16 DONE 0.0s
+
+#17 [frontend 1/5] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#17 DONE 0.0s
+
+#18 [frontend internal] load build context
+#18 transferring context: 183B done
+#18 DONE 0.0s
+
+#19 [frontend 3/5] COPY package.json vite.config.js index.html ./
+#19 CACHED
+
+#20 [frontend 4/5] COPY src ./src
+#20 CACHED
+
+#21 [frontend 2/5] WORKDIR /app
+#21 CACHED
+
+#22 [frontend 5/5] RUN npm install
+#22 CACHED
+
+#23 [frontend] exporting to image
+#23 exporting layers done
+#23 writing image sha256:e009cfd2c20a01caf7120db8847c85b099fda783626cc97368571d559d9fa4bb
+#23 writing image sha256:e009cfd2c20a01caf7120db8847c85b099fda783626cc97368571d559d9fa4bb done
+#23 naming to docker.io/library/task5-fullstack-compose-frontend done
+#23 DONE 0.0s
+
+#24 [frontend] resolving provenance for metadata file
+#24 DONE 0.0s
+ task5-fullstack-compose-backend  Built
+ task5-fullstack-compose-frontend  Built
+ Network task5-fullstack-compose_backend-network  Creating
+ Network task5-fullstack-compose_backend-network  Created
+ Network task5-fullstack-compose_frontend-network  Creating
+ Network task5-fullstack-compose_frontend-network  Created
+ Volume task5-fullstack-compose_postgres_data  Creating
+ Volume task5-fullstack-compose_postgres_data  Created
+ Volume task5-fullstack-compose_redis_data  Creating
+ Volume task5-fullstack-compose_redis_data  Created
+ Container task5-fullstack-compose-postgres-1  Creating
+ Container task5-fullstack-compose-redis-1  Creating
+ Container task5-fullstack-compose-redis-1  Created
+ Container task5-fullstack-compose-postgres-1  Created
+ Container task5-fullstack-compose-backend-1  Creating
+ Container task5-fullstack-compose-backend-1  Created
+ Container task5-fullstack-compose-frontend-1  Creating
+ Container task5-fullstack-compose-frontend-1  Created
+ Container task5-fullstack-compose-nginx-1  Creating
+ Container task5-fullstack-compose-nginx-1  Created
+ Container task5-fullstack-compose-redis-1  Starting
+ Container task5-fullstack-compose-postgres-1  Starting
+ Container task5-fullstack-compose-redis-1  Started
+ Container task5-fullstack-compose-postgres-1  Started
+ Container task5-fullstack-compose-postgres-1  Waiting
+ Container task5-fullstack-compose-redis-1  Waiting
+ Container task5-fullstack-compose-postgres-1  Healthy
+ Container task5-fullstack-compose-redis-1  Healthy
+ Container task5-fullstack-compose-backend-1  Starting
+ Container task5-fullstack-compose-backend-1  Started
+ Container task5-fullstack-compose-backend-1  Waiting
+ Container task5-fullstack-compose-backend-1  Healthy
+ Container task5-fullstack-compose-frontend-1  Starting
+ Container task5-fullstack-compose-frontend-1  Started
+ Container task5-fullstack-compose-backend-1  Waiting
+ Container task5-fullstack-compose-frontend-1  Waiting
+ Container task5-fullstack-compose-backend-1  Healthy
+ Container task5-fullstack-compose-frontend-1  Healthy
+ Container task5-fullstack-compose-nginx-1  Starting
+ Container task5-fullstack-compose-nginx-1  Started
+
+==================================================
+Waiting for services
+==================================================
+Waiting for service 'postgres' to be healthy...
+Service 'postgres' is healthy.
+Waiting for service 'redis' to be healthy...
+Service 'redis' is healthy.
+Waiting for service 'backend' to be healthy...
+Service 'backend' is healthy.
+Waiting for service 'frontend' to be healthy...
+Service 'frontend' is healthy.
+Waiting for service 'nginx' to be healthy...
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Current status for 'nginx': starting
+Service 'nginx' is healthy.
+
+==================================================
+Running tests
+==================================================
+Test 1: docker compose ps
+NAME                                 IMAGE                              COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+task5-fullstack-compose-backend-1    task5-fullstack-compose-backend    "python app.py"          backend    58 seconds ago   Up 46 seconds (healthy)   5000/tcp
+task5-fullstack-compose-frontend-1   task5-fullstack-compose-frontend   "docker-entrypoint.s…"   frontend   58 seconds ago   Up 31 seconds (healthy)   3000/tcp
+task5-fullstack-compose-nginx-1      nginx:alpine                       "/docker-entrypoint.…"   nginx      58 seconds ago   Up 15 seconds (healthy)   0.0.0.0:80->80/tcp, [::]:80->80/tcp
+task5-fullstack-compose-postgres-1   postgres:16-alpine                 "docker-entrypoint.s…"   postgres   58 seconds ago   Up 57 seconds (healthy)   5432/tcp
+task5-fullstack-compose-redis-1      redis:7-alpine                     "docker-entrypoint.s…"   redis      58 seconds ago   Up 57 seconds (healthy)   6379/tcp
+
+Test 2: Frontend
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 5 Full Stack App</title>
+  </head>
+  <body>
+
+Test 3: Backend health
+{"database":true,"redis":true,"status":"healthy"}
+
+
+Test 4: Users endpoint
+[{"email":"gabriel@example.com","id":1,"name":"Gabriel"},{"email":"devops@example.com","id":2,"name":"DevOps User"}]
+
+
+Test 5: Redis cache
+{"counter":1,"message":"Redis counter incremented"}
+
+{"counter":2,"message":"Redis counter incremented"}
+
+
+==================================================
+Scaling backend
+==================================================
+ Container task5-fullstack-compose-postgres-1  Running
+ Container task5-fullstack-compose-redis-1  Running
+ Container task5-fullstack-compose-backend-1  Running
+ Container task5-fullstack-compose-backend-3  Creating
+ Container task5-fullstack-compose-backend-2  Creating
+ Container task5-fullstack-compose-backend-2  Created
+ Container task5-fullstack-compose-backend-3  Created
+ Container task5-fullstack-compose-frontend-1  Running
+ Container task5-fullstack-compose-nginx-1  Running
+ Container task5-fullstack-compose-postgres-1  Waiting
+ Container task5-fullstack-compose-redis-1  Waiting
+ Container task5-fullstack-compose-redis-1  Healthy
+ Container task5-fullstack-compose-postgres-1  Healthy
+ Container task5-fullstack-compose-backend-2  Starting
+ Container task5-fullstack-compose-backend-2  Started
+ Container task5-fullstack-compose-backend-3  Starting
+ Container task5-fullstack-compose-backend-3  Started
+ Container task5-fullstack-compose-backend-2  Waiting
+ Container task5-fullstack-compose-backend-3  Waiting
+ Container task5-fullstack-compose-backend-1  Waiting
+ Container task5-fullstack-compose-backend-2  Healthy
+ Container task5-fullstack-compose-backend-3  Healthy
+ Container task5-fullstack-compose-backend-1  Healthy
+ Container task5-fullstack-compose-backend-2  Waiting
+ Container task5-fullstack-compose-backend-3  Waiting
+ Container task5-fullstack-compose-backend-1  Waiting
+ Container task5-fullstack-compose-frontend-1  Waiting
+ Container task5-fullstack-compose-frontend-1  Healthy
+ Container task5-fullstack-compose-backend-2  Healthy
+ Container task5-fullstack-compose-backend-3  Healthy
+ Container task5-fullstack-compose-backend-1  Healthy
+NAME                                 IMAGE                              COMMAND                  SERVICE    CREATED              STATUS                        PORTS
+task5-fullstack-compose-backend-1    task5-fullstack-compose-backend    "python app.py"          backend    About a minute ago   Up About a minute (healthy)   5000/tcp
+task5-fullstack-compose-backend-2    task5-fullstack-compose-backend    "python app.py"          backend    17 seconds ago       Up 16 seconds (healthy)       5000/tcp
+task5-fullstack-compose-backend-3    task5-fullstack-compose-backend    "python app.py"          backend    17 seconds ago       Up 16 seconds (healthy)       5000/tcp
+task5-fullstack-compose-frontend-1   task5-fullstack-compose-frontend   "docker-entrypoint.s…"   frontend   About a minute ago   Up 48 seconds (healthy)       3000/tcp
+task5-fullstack-compose-nginx-1      nginx:alpine                       "/docker-entrypoint.…"   nginx      About a minute ago   Up 32 seconds (healthy)       0.0.0.0:80->80/tcp, [::]:80->80/tcp
+task5-fullstack-compose-postgres-1   postgres:16-alpine                 "docker-entrypoint.s…"   postgres   About a minute ago   Up About a minute (healthy)   5432/tcp
+task5-fullstack-compose-redis-1      redis:7-alpine                     "docker-entrypoint.s…"   redis      About a minute ago   Up About a minute (healthy)   6379/tcp
+
+==================================================
+Workflow completed successfully
+==================================================
+All output has been saved to run.log
+
+Do you want to clean up (containers + volumes)? (y/n):  Container task5-fullstack-compose-nginx-1  Stopping
+ Container task5-fullstack-compose-nginx-1  Stopped
+ Container task5-fullstack-compose-nginx-1  Removing
+ Container task5-fullstack-compose-nginx-1  Removed
+ Container task5-fullstack-compose-frontend-1  Stopping
+ Container task5-fullstack-compose-frontend-1  Stopped
+ Container task5-fullstack-compose-frontend-1  Removing
+ Container task5-fullstack-compose-frontend-1  Removed
+ Container task5-fullstack-compose-backend-1  Stopping
+ Container task5-fullstack-compose-backend-2  Stopping
+ Container task5-fullstack-compose-backend-3  Stopping
+ Container task5-fullstack-compose-backend-1  Stopped
+ Container task5-fullstack-compose-backend-1  Removing
+ Container task5-fullstack-compose-backend-1  Removed
+ Container task5-fullstack-compose-backend-2  Stopped
+ Container task5-fullstack-compose-backend-2  Removing
+ Container task5-fullstack-compose-backend-2  Removed
+ Container task5-fullstack-compose-backend-3  Stopped
+ Container task5-fullstack-compose-backend-3  Removing
+ Container task5-fullstack-compose-backend-3  Removed
+ Container task5-fullstack-compose-redis-1  Stopping
+ Container task5-fullstack-compose-postgres-1  Stopping
+ Container task5-fullstack-compose-postgres-1  Stopped
+ Container task5-fullstack-compose-postgres-1  Removing
+ Container task5-fullstack-compose-postgres-1  Removed
+ Container task5-fullstack-compose-redis-1  Stopped
+ Container task5-fullstack-compose-redis-1  Removing
+ Container task5-fullstack-compose-redis-1  Removed
+ Volume task5-fullstack-compose_postgres_data  Removing
+ Volume task5-fullstack-compose_redis_data  Removing
+ Network task5-fullstack-compose_backend-network  Removing
+ Network task5-fullstack-compose_frontend-network  Removing
+ Volume task5-fullstack-compose_redis_data  Removed
+ Volume task5-fullstack-compose_postgres_data  Removed
+ Network task5-fullstack-compose_backend-network  Removed
+ Network task5-fullstack-compose_frontend-network  Removed
+Cleanup complete.
