@@ -1,5 +1,5 @@
 #!/bin/bash
-LOG_DIR="var/logs/health-monitor"
+LOG_DIR="./logs/health-monitor"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/health-monitor.log"
 
