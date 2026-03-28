@@ -1,0 +1,2 @@
+*/5 * * * * ~/monitor.sh
+0 0 * * * ~/git-commit-logs.sh
