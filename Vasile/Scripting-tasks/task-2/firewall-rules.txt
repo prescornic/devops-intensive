@@ -1,0 +1,15 @@
+Firewall Configuration Documentation:
+
+Default Policy:
+- Incoming: DENIED (Block all by default)
+- Outgoing: ALLOWED
+
+Allowed Ports:
+- Port 22 (TCP): SSH access for remote management.
+- Port 80 (TCP): Inbound HTTP traffic (Handled by Nginx for 301 Redirect).
+- Port 443 (TCP): Inbound HTTPS traffic (Secured via SSL).
+- Port 5000 (TCP): Local Flask application port (Internal testing).
+
+Notes:
+All traffic is routed through Nginx (443) before being proxied to the 
+internal Flask application on port 5000.
