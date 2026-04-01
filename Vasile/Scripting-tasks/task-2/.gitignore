@@ -1,0 +1,5 @@
+certs/
+nginx.conf
+__pycache__/
+venv/
+*.pyc

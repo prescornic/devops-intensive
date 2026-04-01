@@ -1,0 +1,41 @@
+events {}
+
+http {
+    server {
+        listen 80;
+        server_name localhost;
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+        listen 443 ssl;
+        server_name localhost;
+
+        ssl_certificate     "PROJECT_PATH_PLACEHOLDER/certs/server.crt";
+        ssl_certificate_key "PROJECT_PATH_PLACEHOLDER/certs/server.key";
+
+        # --- Basic WAF Rules ---
+        # Block common SQL Injection patterns
+        if ($query_string ~* "union.*select|' OR '1'='1|drop.*table|select.*from") {
+            return 403;
+        }
+
+        # Block requests with malicious characters in URI
+        if ($request_uri ~* "(\.\./|\%27|\%22|union|select|insert|drop|delete|update|cast|char|varchar|nvarchar)") {
+            return 403;
+        }
+
+        location /status {
+            proxy_pass http://127.0.0.1:5000/status;
+            proxy_set_header Host $host;
+        }
+
+        location /ws {
+            proxy_pass http://127.0.0.1:5000/ws;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_set_header Host $host;
+        }
+    }
+}

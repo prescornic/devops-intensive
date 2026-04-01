@@ -1,0 +1,15 @@
+# --- Backup Archives ---
+backups/*.tar.gz
+backups/*.tar
+
+# --- Logs ---
+logs/*.log
+daily-backup-summary.txt
+
+# --- Environment & OS ---
+.DS_Store
+Thumbs.db
+
+# --- SSH / Security ---
+*.pem
+id_rsa
