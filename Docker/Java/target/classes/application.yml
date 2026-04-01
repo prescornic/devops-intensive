@@ -10,3 +10,72 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+
+  # Application name (used in tracing and metrics)
+  application:
+    name: demo-api
+
+# Actuator configuration for metrics and health
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus,info,threaddump
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  
+  # Metrics configuration
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 1m
+    tags:
+      application: demo-api
+      environment: ${APP_ENV:dev}
+      service: backend
+      version: 1.0
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        jdbc.connections.active: true
+  
+  # Tracing configuration (OpenTelemetry OTLP)
+  tracing:
+    sampling:
+      probability: ${MANAGEMENT_TRACING_SAMPLING_PROBABILITY:1.0}
+  otlp:
+    metrics:
+      export:
+        enabled: true
+        url: ${OTLP_METRICS_ENDPOINT:${OTEL_EXPORTER_OTLP_ENDPOINT:https://otlp-gateway-prod-eu-west-2.grafana.net/otlp}}
+        step: 30s
+        headers:
+          Authorization: ${OTLP_METRICS_AUTH_HEADER:${OTLP_AUTH_HEADER:}}
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
+    max-size: 100MB
+    max-history: 7
+
+# Custom application properties
+app:
+  environment: ${APP_ENV:dev}
+  service-name: demo-api
+  version: 1.0

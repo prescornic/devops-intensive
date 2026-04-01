@@ -1,0 +1,123 @@
+version: '3.8'
+
+# Docker Compose configuration with Grafana Cloud observability
+# Copy this file as docker-compose.grafana.yml and fill in your credentials
+# Usage: docker-compose -f docker-compose.grafana.yml up
+
+services:
+  frontend:
+    build: 
+      context: ./Frontend
+      dockerfile: Dockerfile
+    image: nginx-frontend:latest
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - frontend-network
+    environment:
+      - APP_ENV=prod
+
+  backend:
+    build: 
+      context: ./Java
+      dockerfile: Dockerfile
+    image: java-backend:latest
+    restart: always
+    environment:
+      # Database configuration
+      MY_ARGUMENT: "PROD"
+      DB_URL: jdbc:postgresql://db:5432/mydb
+      DB_USER: ${DB_USER:-user}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      
+      # Application & Environment
+      APP_ENV: prod
+      HOSTNAME: ${HOSTNAME:-demo-api-container}
+      
+      # Spring configuration
+      SPRING_PROFILES_ACTIVE: prod,grafana
+      
+      # ====== GRAFANA CLOUD CONFIGURATION ======
+      # Replace these with your actual Grafana Cloud credentials
+      
+      # Shared API Token (used for all services)
+      GRAFANA_CLOUD_TOKEN: ${GRAFANA_CLOUD_TOKEN}
+      
+      # Loki Configuration (for logs)
+      LOKI_URL: ${LOKI_URL}
+      LOKI_USER: ${LOKI_USER}
+      LOKI_PASSWORD: ${GRAFANA_CLOUD_TOKEN}
+      
+      # OpenTelemetry Configuration (for traces and metrics)
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTLP_TRACES_ENDPOINT: ${OTLP_TRACES_ENDPOINT}
+      OTLP_METRICS_ENDPOINT: ${OTLP_METRICS_ENDPOINT}
+      OTLP_AUTH_HEADER: ${OTLP_AUTH_HEADER}
+      TEMPO_USER: ${TEMPO_USER}
+      PROM_USER: ${PROM_USER}
+      PROM_URL: ${PROM_URL}
+      
+      # Trace sampling (1.0 = 100%)
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: "1.0"
+      
+      # Logging
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_EXAMPLE: DEBUG
+    
+    ports:
+      - "8080:8080"
+    
+    depends_on:
+      - db
+    
+    networks:
+      - db-network
+      - frontend-network
+    
+    volumes:
+      # Mount logs directory for persistence/monitoring
+      - ./java-logs:/app/logs
+    
+    # Health checks for orchestration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - db-data:/var/lib/postgresql/data
+    networks:
+      - db-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+    driver: local
+  java-logs:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
+  db-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge

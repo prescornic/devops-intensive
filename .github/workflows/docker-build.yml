@@ -1,0 +1,29 @@
+name: Build Docker Images
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: Docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build frontend image
+        run: docker compose -f docker-compose.yaml build frontend
+
+      - name: Build backend image
+        run: docker compose -f docker-compose.yaml build backend
