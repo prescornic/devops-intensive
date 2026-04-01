@@ -1,0 +1,2 @@
+00 2 * * * ~/backup.sh
+15 2 * * * ~/git-commit-logs.sh
