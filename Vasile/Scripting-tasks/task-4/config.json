@@ -1,0 +1,12 @@
+{
+  "endpoints": [
+    {"url": "https://google.com", "type": "https", "expected_status": 200},
+    {"url": "https://expired.badssl.com/", "type": "https", "expected_status": 200},
+    {"url": "http://httpbin.org/status/404", "type": "http", "expected_status": 200},
+    {"host": "8.8.8.8", "type": "dns"}
+  ],
+  "settings": {
+    "timeout": 5,
+    "retries": 2
+  }
+}
