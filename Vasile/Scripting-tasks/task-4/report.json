@@ -1,0 +1,36 @@
+{
+    "timestamp": "2026-04-02 10:27",
+    "results": [
+        {
+            "url": "https://google.com",
+            "status_code": 200,
+            "success": true,
+            "time_ms": 659.33,
+            "ssl": {
+                "valid": true,
+                "expires": "2026-06-01",
+                "days_left": 60,
+                "alert": false
+            }
+        },
+        {
+            "url": "https://expired.badssl.com/",
+            "success": false,
+            "error": "HTTPSConnectionPool(host='expired.badssl.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1129)')))"
+        },
+        {
+            "url": "http://httpbin.org/status/404",
+            "status_code": 404,
+            "success": false,
+            "time_ms": 324.4,
+            "ssl": null
+        },
+        {
+            "status": "success",
+            "ip": "8.8.8.8",
+            "time_ms": 0.02,
+            "url": "8.8.8.8",
+            "success": true
+        }
+    ]
+}
