@@ -1,0 +1,11 @@
+*.tfvars
+*.tfvars.json
+
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+
+*.pem
+*.pub
