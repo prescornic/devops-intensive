@@ -33,6 +33,7 @@ resource "aws_subnet" "public_b" {
   cidr_block        = var.public_subnet_cidr_blocks[1]
   availability_zone = "${var.aws_region}b"
   map_public_ip_on_launch = true
+  
   tags              = { Name = "vvd-public-b" }
 }
 
@@ -42,6 +43,7 @@ resource "aws_route_table" "public_rt" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gw.id
   }
+
   tags = { Name = "vvd-public-rt" }
 }
 
@@ -58,5 +60,6 @@ resource "aws_route_table_association" "b" {
 resource "aws_db_subnet_group" "db_group" {
   name       = "vvd-db-subnet-group"
   subnet_ids = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+
   tags       = { Name = "vvd-db-subnet-group" }
 }

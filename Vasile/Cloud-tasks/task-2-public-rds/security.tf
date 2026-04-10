@@ -1,5 +1,5 @@
 resource "aws_security_group" "db_sg" {
-  name        = "vvd-db-sg-phase1"
+  name        = "vvd-db-sg"
   description = "Allow PG traffic from Office IP"
   vpc_id      = aws_vpc.main.id
 
