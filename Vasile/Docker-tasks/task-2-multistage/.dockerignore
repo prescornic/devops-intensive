@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+
+Dockerfile.single
+build-compare.sh
+security-scan.sh
+README.md
