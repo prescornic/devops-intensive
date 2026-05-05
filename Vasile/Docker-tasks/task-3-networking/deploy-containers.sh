@@ -20,6 +20,6 @@ docker run -d --name backend --network backend-net alpine sleep 3600
 docker network connect frontend-net backend
 
 echo "Deploying database on backend-net"
-docker run -d --name database --network backend-net alpine -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=appdb postgres:16-alpine sleep 3600
+docker run -d --name database --network backend-net alpine sleep 3600
 
 echo "Deployment complete."
