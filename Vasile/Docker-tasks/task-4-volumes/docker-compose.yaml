@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx_conf:/etc/nginx/conf:ro
+      - ./nginx/html/index.html:/usr/share/nginx/html/index.html:ro
+    ports:
+      - "8080:80"
+  cache:
+    image: alpine
+    command: sleep 3600
+    tmpfs:
+      - /tmp/cache-data
+  writer:
+    image: alpine
+    command: sh -c "echo 'Hello from Writer' > /shared/data.txt && sleep 3600"
+    volumes:
+      - shared_data:/shared
+  reader:
+    image: alpine
+    command: sleep 3600
+    volumes:
+      - shared_data:/shared
+volumes:
+  db_data:
+  shared_data:
