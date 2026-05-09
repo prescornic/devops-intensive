@@ -1,0 +1,9 @@
+services:
+  backend:
+    restart: always
+
+  frontend:
+    restart: always
+
+  nginx:
+    restart: always
