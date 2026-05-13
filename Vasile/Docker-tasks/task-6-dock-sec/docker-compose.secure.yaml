@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.secure
+
+    ports:
+      - "5000:5000"
+
+    restart: unless-stopped
+
+    security_opt:
+      # Once a container starts as non-root, it can NEVER become root.
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      - NET_BIND_SERVICE
+
+    read_only: true
+
+    tmpfs:
+      - /tmp
+
+    mem_limit: 512m
+
+    cpus: 0.5
+
+    secrets:
+      - app_secret
+
+    environment:
+      - FLASK_ENV=production
+
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
+
+secrets:
+  app_secret:
+    file: ./secrets/app_secret.txt

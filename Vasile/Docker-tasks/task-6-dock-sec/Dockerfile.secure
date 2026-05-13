@@ -1,0 +1,30 @@
+# ---------- BUILD STAGE ----------
+FROM python:3.12-alpine3.20 AS builder
+
+WORKDIR /app
+
+RUN apk add --no-cache build-base=0.5-r3
+
+COPY app/requirements.txt .
+
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# ---------- PRODUCTION STAGE ----------
+FROM python:3.12-alpine3.20
+
+WORKDIR /app
+
+# in order to prevent running from root
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup -u 1001
+
+COPY --from=builder /install /usr/local
+
+COPY app .
+
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+EXPOSE 5000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
