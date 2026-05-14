@@ -1,0 +1,65 @@
+services:
+
+  app:
+    build:
+      context: ./app
+
+    ports:
+      - "5000:5000"
+
+    logging:
+      driver: "json-file"
+      options:
+        # Rotate log file when it reaches 10 megabytes
+        max-size: "10m"
+        # Keep only 3 rotated log files — oldest one gets deleted
+        max-file: "3"
+
+  prometheus:
+    image: prom/prometheus
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+
+  grafana:
+    image: grafana/grafana
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  loki:
+    image: grafana/loki:latest
+
+    ports:
+      - "3100:3100"
+
+    # Override the default container command — starts Loki with a specific config file at /etc/loki/local-config.yaml.
+    command: -config.file=/etc/loki/local-config.yaml
+
+    volumes:
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail/config.yaml:/etc/promtail/config.yaml
+
+    command: -config.file=/etc/promtail/config.yaml
+
+volumes:
+  grafana-data:
