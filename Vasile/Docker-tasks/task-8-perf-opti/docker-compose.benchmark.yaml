@@ -1,0 +1,31 @@
+services:
+
+  app-native:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.native
+
+    ports:
+      - "5003:5000"
+
+  unoptimized:
+    build:
+      context: .
+      dockerfile: Dockerfile.unoptimized
+
+    ports:
+      - "5001:5000"
+
+    mem_limit: 1g
+    cpus: 1.0
+
+  optimized:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized
+
+    ports:
+      - "5002:5000"
+
+    mem_limit: 512m
+    cpus: 0.5

@@ -1,0 +1,4 @@
+CONTAINER ID   NAME                             CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+e57b2f572c5c   task-8-perf-opti-app-native-1    0.02%     22.7MiB / 7.75GiB   0.29%     555kB / 614kB     0B / 176kB   1
+5dc761f66f32   task-8-perf-opti-unoptimized-1   0.02%     22.3MiB / 1GiB      2.18%     2.76MB / 3.06MB   0B / 0B      1
+58d637e63a48   task-8-perf-opti-optimized-1     0.01%     33.11MiB / 512MiB   6.47%     2.25MB / 2.96MB   0B / 0B      2

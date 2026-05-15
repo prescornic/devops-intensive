@@ -1,0 +1,20 @@
+FROM ubuntu:24.04
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    curl \
+    vim \
+    nano \
+    htop \
+    git
+
+WORKDIR /app
+
+COPY app .
+
+RUN pip3 install -r requirements.txt --break-system-packages
+
+EXPOSE 5000
+
+CMD ["python3", "app.py"]

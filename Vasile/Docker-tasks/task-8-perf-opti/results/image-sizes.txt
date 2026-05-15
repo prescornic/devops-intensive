@@ -1,0 +1,4 @@
+IMAGE                                  ID             DISK USAGE   CONTENT SIZE   EXTRA
+task-8-perf-opti-app-native:latest     0ded4962bc40       1.63GB          406MB   U    
+task-8-perf-opti-optimized:latest      f02b2149dabd       88.5MB         20.6MB   U    
+task-8-perf-opti-unoptimized:latest    c78e728aa875        947MB          245MB   U    

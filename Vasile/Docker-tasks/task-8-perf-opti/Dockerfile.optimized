@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1.7
+
+FROM python:3.12-alpine AS builder
+
+WORKDIR /app
+
+COPY app/requirements.txt .
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --prefix=/install -r requirements.txt
+
+FROM python:3.12-alpine
+
+WORKDIR /app
+
+COPY --from=builder /install /usr/local
+
+COPY app .
+
+RUN adduser -D appuser
+
+USER appuser
+
+EXPOSE 5000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
