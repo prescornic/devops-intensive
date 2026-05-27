@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: color-app
+  namespace: fullstack-app
 
 spec:
   serviceName: postgres-service
@@ -29,32 +29,26 @@ spec:
 
           env:
             - name: POSTGRES_DB
-              value: colorsdb
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_DB
 
             - name: POSTGRES_USER
-              value: postgres
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
-                  key: DB_PASSWORD
+                  name: app-secret
+                  key: POSTGRES_PASSWORD
 
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-
-          readinessProbe:
-            tcpSocket:
-              port: 5432
-            initialDelaySeconds: 5
-            periodSeconds: 10
-
-          livenessProbe:
-            tcpSocket:
-              port: 5432
-            initialDelaySeconds: 10
-            periodSeconds: 15
 
           resources:
             requests:
@@ -62,8 +56,8 @@ spec:
               cpu: "100m"
 
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "256Mi"
+              cpu: "250m"
 
   volumeClaimTemplates:
     - metadata:
