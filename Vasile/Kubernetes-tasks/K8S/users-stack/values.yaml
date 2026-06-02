@@ -1,0 +1,14 @@
+# Global values accessible by all subcharts
+global:
+  environment: production
+  company: demo
+
+# Default overrides for subcharts
+frontend:
+  enabled: true
+
+backend:
+  enabled: true
+
+database:
+  enabled: true
